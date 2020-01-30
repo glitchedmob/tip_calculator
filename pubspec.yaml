@@ -21,6 +21,8 @@ dependencies:
     sdk: flutter
   flutter_dotenv: ^2.1.0
   google_fonts: ^0.3.5
+  # Using custom version of this library that makes the ConfigurableExpansionTileState class public
+  # as well as it's handleTap method. This allows outside widgets programmatic control
   configurable_expansion_tile:
     git: git://github.com/glitchedmob/configurable_expansion_tile.git
 
