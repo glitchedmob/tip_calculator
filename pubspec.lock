@@ -46,9 +46,11 @@ packages:
   configurable_expansion_tile:
     dependency: "direct main"
     description:
-      name: configurable_expansion_tile
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: "9e1881f1fe44bac017f24e367e21b528532c2620"
+      url: "git://github.com/glitchedmob/configurable_expansion_tile.git"
+    source: git
     version: "1.0.0"
   convert:
     dependency: transitive

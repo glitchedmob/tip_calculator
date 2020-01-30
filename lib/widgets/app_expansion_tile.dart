@@ -1,12 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:configurable_expansion_tile/configurable_expansion_tile.dart';
 
-class AppExpansionTile extends StatelessWidget {
+class AppExpansionTile extends StatefulWidget {
   final Widget header;
   final List<Widget> children;
+  final GestureTapCallback onHeaderTap;
+  final bool expanded;
 
-  const AppExpansionTile({Key key, this.header, this.children})
-      : super(key: key);
+  const AppExpansionTile({
+    Key key,
+    this.header,
+    this.children,
+    this.onHeaderTap,
+    this.expanded = false,
+  }) : super(key: key);
+
+  @override
+  _AppExpansionTileState createState() => _AppExpansionTileState();
+}
+
+class _AppExpansionTileState extends State<AppExpansionTile> {
+  final GlobalKey<ConfigurableExpansionTileState> expansionTileKey =
+      GlobalKey();
+
+  @override
+  void didUpdateWidget(AppExpansionTile oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.expanded != widget.expanded) {
+      expansionTileKey.currentState.handleTap();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,21 +39,31 @@ class AppExpansionTile extends StatelessWidget {
       child: Container(
         color: Theme.of(context).accentColor,
         child: ConfigurableExpansionTile(
-          animatedWidgetFollowingHeader: Padding(
-            padding: EdgeInsets.all(5),
-            child: Icon(Icons.expand_more),
+          key: expansionTileKey,
+          initiallyExpanded: widget.expanded,
+          animatedWidgetFollowingHeader: GestureDetector(
+            onTap: widget.onHeaderTap,
+            behavior: HitTestBehavior.opaque,
+            child: Padding(
+              padding: EdgeInsets.all(5),
+              child: Icon(Icons.expand_more),
+            ),
           ),
           header: Expanded(
-            child: Padding(
-              padding: EdgeInsets.all(10),
-              child: header,
+            child: GestureDetector(
+              onTap: widget.onHeaderTap,
+              behavior: HitTestBehavior.opaque,
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: widget.header,
+              ),
             ),
           ),
           children: <Widget>[
             SizedBox(
               width: double.infinity,
               child: Column(
-                children: children,
+                children: widget.children,
               ),
             )
           ],

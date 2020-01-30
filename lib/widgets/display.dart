@@ -1,8 +1,16 @@
-import 'package:configurable_expansion_tile/configurable_expansion_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:tip_calculator/widgets/app_expansion_tile.dart';
 
-class Display extends StatelessWidget {
+class Display extends StatefulWidget {
+  @override
+  _DisplayState createState() => _DisplayState();
+}
+
+class _DisplayState extends State<Display> {
+  bool tipPercentExpanded = false;
+  bool tipAmountExpanded = false;
+  bool totalAmountExpanded = false;
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -21,6 +29,15 @@ class Display extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
           child: AppExpansionTile(
+            expanded: tipPercentExpanded,
+            onHeaderTap: () {
+              setState(() {
+                tipPercentExpanded = !tipPercentExpanded;
+
+                tipAmountExpanded = false;
+                totalAmountExpanded = false;
+              });
+            },
             header: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -39,6 +56,15 @@ class Display extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
           child: AppExpansionTile(
+            expanded: tipAmountExpanded,
+            onHeaderTap: () {
+              setState(() {
+                tipAmountExpanded = !tipAmountExpanded;
+
+                tipPercentExpanded = false;
+                totalAmountExpanded = false;
+              });
+            },
             header: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -58,6 +84,15 @@ class Display extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
           child: AppExpansionTile(
+            expanded: totalAmountExpanded,
+            onHeaderTap: () {
+              setState(() {
+                totalAmountExpanded = !totalAmountExpanded;
+
+                tipPercentExpanded = false;
+                tipAmountExpanded = false;
+              });
+            },
             header: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[

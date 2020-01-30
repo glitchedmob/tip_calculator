@@ -11,7 +11,7 @@ ThemeData appTheme(BuildContext context) {
     primaryColor: Primary,
     backgroundColor: Background,
     scaffoldBackgroundColor: Background,
-    accentColor: Accent,
+    accentColor: Colors.blue,
     textTheme: GoogleFonts.robotoMonoTextTheme(Typography.whiteMountainView),
   );
 }
