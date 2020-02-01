@@ -37,12 +37,20 @@ class TipProvider extends ChangeNotifier {
   }
 
   void roundTipAmountToNearest(int amount) {
+    if(billAmount <= 0) {
+      return;
+    }
+
     var roundedTip = _roundValueToNearest(tipAmount, amount);
 
     tipPercent = (roundedTip / billAmount) * 100;
   }
 
   void roundBillTotalToNearest(int amount) {
+    if(billAmount <= 0) {
+      return;
+    }
+
     var roundedBill = _roundValueToNearest(billTotal, amount);
 
     var newTipAmount = roundedBill - billAmount;
