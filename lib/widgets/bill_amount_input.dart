@@ -13,7 +13,10 @@ class BillAmountInput extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text('Bill Amount'),
-          Text('\$50.00'),
+          Padding(
+            padding: EdgeInsets.only(right: 35),
+            child: Text('\$50.00'),
+          ),
         ],
       ),
     );

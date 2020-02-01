@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:tip_calculator/widgets/app_expansion_tile.dart';
+import 'package:tip_calculator/widgets/expansion_tile_option.dart';
 
 class TipPercentExpansionTile extends StatelessWidget {
   final bool expanded;
   final GestureTapCallback onTap;
 
-  const TipPercentExpansionTile({Key key, this.expanded, this.onTap}) : super(key: key);
+  const TipPercentExpansionTile({Key key, this.expanded, this.onTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +23,18 @@ class TipPercentExpansionTile extends StatelessWidget {
         ],
       ),
       children: <Widget>[
-        Text('10%'),
-        Text('15%'),
-        Text('20%'),
-        Text('25%'),
+        buildOption(10),
+        buildOption(15),
+        buildOption(20),
+        buildOption(25),
       ],
+    );
+  }
+
+  Widget buildOption(value) {
+    return ExpansionTileOption(
+      text: '$value%',
+      onTap: () {},
     );
   }
 }
