@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import 'package:tip_calculator/provider/tip_provider.dart';
+import 'package:tip_calculator/utils/money.dart';
 import 'package:tip_calculator/widgets/app_expansion_tile.dart';
 import 'package:tip_calculator/widgets/expansion_tile_option.dart';
 
@@ -12,6 +15,8 @@ class TipAmountExpansionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var tipProvider = Provider.of<TipProvider>(context);
+
     return AppExpansionTile(
       expanded: expanded,
       onHeaderTap: onTap,
@@ -19,7 +24,7 @@ class TipAmountExpansionTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text('Tip Amount'),
-          Text('\$10.00'),
+          Text(formatCents(tipProvider.tipAmount)),
         ],
       ),
       children: <Widget>[

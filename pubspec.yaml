@@ -25,6 +25,8 @@ dependencies:
   # as well as it's handleTap method. This allows outside widgets programmatic control
   configurable_expansion_tile:
     git: git://github.com/glitchedmob/configurable_expansion_tile.git
+  provider: ^4.0.2
+  money2: ^1.3.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

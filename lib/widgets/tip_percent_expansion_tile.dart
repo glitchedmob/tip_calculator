@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import 'package:tip_calculator/provider/tip_provider.dart';
 import 'package:tip_calculator/widgets/app_expansion_tile.dart';
 import 'package:tip_calculator/widgets/expansion_tile_option.dart';
 
@@ -12,6 +14,8 @@ class TipPercentExpansionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var tipProvider = Provider.of<TipProvider>(context);
+
     return AppExpansionTile(
       expanded: expanded,
       onHeaderTap: onTap,
@@ -19,22 +23,27 @@ class TipPercentExpansionTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text('Tip %'),
-          Text('20%'),
+          Text('${tipProvider.tipPercent}%'),
         ],
       ),
       children: <Widget>[
-        buildOption(10),
-        buildOption(15),
-        buildOption(20),
-        buildOption(25),
+        buildOption(context, 10),
+        buildOption(context, 15),
+        buildOption(context, 20),
+        buildOption(context, 25),
       ],
     );
   }
 
-  Widget buildOption(value) {
+  Widget buildOption(BuildContext context, int value) {
+    var tipProvider = Provider.of<TipProvider>(context);
+
     return ExpansionTileOption(
       text: '$value%',
-      onTap: () {},
+      onTap: () {
+        tipProvider.tipPercent = value;
+        onTap();
+      },
     );
   }
 }

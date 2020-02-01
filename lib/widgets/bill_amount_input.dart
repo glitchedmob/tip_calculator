@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'package:tip_calculator/provider/tip_provider.dart';
+import 'package:tip_calculator/utils/money.dart';
 
 class BillAmountInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var tipProvider = Provider.of<TipProvider>(context);
+
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).accentColor,
@@ -15,7 +21,7 @@ class BillAmountInput extends StatelessWidget {
           Text('Bill Amount'),
           Padding(
             padding: EdgeInsets.only(right: 35),
-            child: Text('\$50.00'),
+            child: Text(formatCents(tipProvider.billAmount)),
           ),
         ],
       ),
