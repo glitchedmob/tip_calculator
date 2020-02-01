@@ -9,7 +9,7 @@ class CalculatorScreen extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: <Widget>[
-          Expanded(child: Display()),
+          Expanded(child: ResultDisplay()),
           Container(height: 3, color: Theme.of(context).primaryColor),
           Padding(padding: EdgeInsets.only(bottom: 30)),
           Keypad(),

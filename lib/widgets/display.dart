@@ -1,131 +1,75 @@
 import 'package:flutter/material.dart';
-import 'package:tip_calculator/widgets/app_expansion_tile.dart';
 
-class Display extends StatefulWidget {
+import 'package:tip_calculator/widgets/bill_amount_input.dart';
+import 'package:tip_calculator/widgets/bill_total_expansion_tile.dart';
+import 'package:tip_calculator/widgets/tip_amount_expansion_tile.dart';
+import 'package:tip_calculator/widgets/tip_percent_expansion_tile.dart';
+
+class ResultDisplay extends StatefulWidget {
   @override
-  _DisplayState createState() => _DisplayState();
+  _ResultDisplayState createState() => _ResultDisplayState();
 }
 
-class _DisplayState extends State<Display> {
+class _ResultDisplayState extends State<ResultDisplay> {
   bool tipPercentExpanded = false;
   bool tipAmountExpanded = false;
   bool totalAmountExpanded = false;
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(left: 20, right: 20, top: 45, bottom: 20),
-          child: buildButton(context,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  buildText('Bill Amount'),
-                  buildText('\$50.00'),
-                ],
-              )),
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
-          child: AppExpansionTile(
-            expanded: tipPercentExpanded,
-            onHeaderTap: () {
-              setState(() {
-                tipPercentExpanded = !tipPercentExpanded;
-
-                tipAmountExpanded = false;
-                totalAmountExpanded = false;
-              });
-            },
-            header: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                buildText('Tip %'),
-                buildText('20%'),
-              ],
-            ),
-            children: <Widget>[
-              buildText('10%'),
-              buildText('15%'),
-              buildText('20%'),
-              buildText('25%'),
-            ],
+    return DefaultTextStyle(
+      style: Theme.of(context).textTheme.body1.copyWith(fontSize: 20),
+      child: ListView(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(left: 20, right: 20, top: 45, bottom: 20),
+            child: BillAmountInput(),
           ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
-          child: AppExpansionTile(
-            expanded: tipAmountExpanded,
-            onHeaderTap: () {
-              setState(() {
-                tipAmountExpanded = !tipAmountExpanded;
+          Padding(
+            padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+            child: TipPercentExpansionTile(
+              expanded: tipPercentExpanded,
+              onTap: () {
+                setState(() {
+                  tipPercentExpanded = !tipPercentExpanded;
 
-                tipPercentExpanded = false;
-                totalAmountExpanded = false;
-              });
-            },
-            header: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                buildText('Tip Amount'),
-                buildText('\$10.00'),
-              ],
-            ),
-            children: <Widget>[
-              buildText('Round Up To:'),
-              buildText('\$1'),
-              buildText('\$5'),
-              buildText('\$10'),
-              buildText('\$15'),
-            ],
+                  tipAmountExpanded = false;
+                  totalAmountExpanded = false;
+                });
+              },
+            )
           ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
-          child: AppExpansionTile(
-            expanded: totalAmountExpanded,
-            onHeaderTap: () {
-              setState(() {
-                totalAmountExpanded = !totalAmountExpanded;
+          Padding(
+            padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+            child: TipAmountExpansionTile(
+              expanded: tipAmountExpanded,
+              onTap: () {
+                setState(() {
+                  tipAmountExpanded = !tipAmountExpanded;
 
-                tipPercentExpanded = false;
-                tipAmountExpanded = false;
-              });
-            },
-            header: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                buildText('Total Amount'),
-                buildText('\$60.00'),
-              ],
+                  tipPercentExpanded = false;
+                  totalAmountExpanded = false;
+                });
+              },
             ),
-            children: <Widget>[
-              buildText('Round Up To:'),
-              buildText('\$1'),
-              buildText('\$5'),
-              buildText('\$10'),
-              buildText('\$15'),
-            ],
           ),
-        ),
-      ],
-    );
-  }
+          Padding(
+            padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+            child: BillTotalExpansionTile(
+              expanded: totalAmountExpanded,
+              onTap: () {
+                setState(() {
+                  totalAmountExpanded = !totalAmountExpanded;
 
-  Widget buildText(String text) {
-    return Text(text, style: TextStyle(fontSize: 20));
-  }
-
-  Widget buildButton(BuildContext context,
-      {@required Widget child, EdgeInsets padding}) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).accentColor,
-        borderRadius: BorderRadius.all(Radius.circular(15)),
+                  tipPercentExpanded = false;
+                  tipAmountExpanded = false;
+                });
+              },
+            ),
+          ),
+        ],
       ),
-      padding: padding == null ? EdgeInsets.all(10) : padding,
-      child: child,
     );
   }
 }
+
