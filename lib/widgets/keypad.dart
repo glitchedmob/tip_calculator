@@ -1,4 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:vibration/vibration.dart';
+
+import 'package:tip_calculator/provider/tip_provider.dart';
 
 class Keypad extends StatelessWidget {
   @override
@@ -61,10 +67,51 @@ class Keypad extends StatelessWidget {
         shape: CircleBorder(),
         color: accent ? Theme.of(context).accentColor : Theme.of(context).primaryColor,
         child: content,
-        onPressed: () {},
+        onPressed: () {
+          onKeyPress(context, command);
+        },
       ),
     );
   }
 
-  onKeyPress() {}
+  onKeyPress(BuildContext context, String command) {
+    var tipProvider = Provider.of<TipProvider>(context, listen: false);
+
+    if(command == 'AC') {
+      tipProvider.reset();
+      vibrateLong();
+      return;
+    }
+
+    var text = tipProvider.billAmount.toString();
+
+    if(command == 'DEL') {
+      if(text == '0') {
+        vibrateLong();
+        return;
+      }
+      text = text.substring(0, text.length - 1);
+    } else {
+      text = '$text$command';
+    }
+
+    if(text.length >= 10) {
+      vibrateLong();
+      return;
+    }
+    
+    vibrateShort();
+
+    tipProvider.billAmount = int.tryParse(text) ?? 0;
+  }
+  
+  vibrateShort() {
+    if(Platform.isAndroid) {
+      Vibration.vibrate(duration: 50, amplitude: 20);
+    }
+  }
+  
+  vibrateLong() {
+    Vibration.vibrate(duration: 200);
+  }
 }

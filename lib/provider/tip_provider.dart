@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 class TipProvider extends ChangeNotifier {
-  int _billAmount = 1000;
+  int _billAmount = 0;
 
   int get billAmount => _billAmount;
 
@@ -10,11 +10,11 @@ class TipProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  int _tipPercent = 20;
+  double _tipPercent = 20;
 
-  int get tipPercent => _tipPercent;
+  double get tipPercent => _tipPercent;
 
-  set tipPercent(int newValue) {
+  set tipPercent(double newValue) {
     _tipPercent = newValue;
     notifyListeners();
   }
@@ -29,5 +29,33 @@ class TipProvider extends ChangeNotifier {
 
   int get billTotal {
     return billAmount + tipAmount;
+  }
+
+  void reset() {
+    billAmount = 0;
+    tipPercent = 20;
+  }
+
+  void roundTipAmountToNearest(int amount) {
+    var roundedTip = _roundValueToNearest(tipAmount, amount);
+
+    tipPercent = (roundedTip / billAmount) * 100;
+  }
+
+  void roundBillTotalToNearest(int amount) {
+    var roundedBill = _roundValueToNearest(billTotal, amount);
+
+    var newTipAmount = roundedBill - billAmount;
+
+    tipPercent = (newTipAmount / (roundedBill - newTipAmount)) * 100;
+  }
+
+  int _roundValueToNearest(int value, int amount) {
+    if(value < amount) {
+      return amount;
+    }
+
+    var factor = (value ~/ amount) + 1;
+    return (factor * amount).toInt();
   }
 }

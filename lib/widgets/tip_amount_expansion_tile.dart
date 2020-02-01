@@ -32,18 +32,22 @@ class TipAmountExpansionTile extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 10),
           child: Text('Round Up To Nearest:'),
         ),
-        buildOption(1),
-        buildOption(5),
-        buildOption(10),
-        buildOption(15),
+        buildOption(context, 1),
+        buildOption(context, 5),
+        buildOption(context, 10),
       ],
     );
   }
 
-  Widget buildOption(value) {
+  Widget buildOption(BuildContext context, int value) {
+    var tipProvider = Provider.of<TipProvider>(context, listen: false);
+
     return ExpansionTileOption(
       text: '\$$value',
-      onTap: () {},
+      onTap: () {
+        tipProvider.roundTipAmountToNearest(value * 100);
+        onTap();
+      },
     );
   }
 }

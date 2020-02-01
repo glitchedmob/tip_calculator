@@ -23,7 +23,7 @@ class TipPercentExpansionTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text('Tip %'),
-          Text('${tipProvider.tipPercent}%'),
+          Text('${_formatPercent(tipProvider.tipPercent)}%'),
         ],
       ),
       children: <Widget>[
@@ -35,13 +35,17 @@ class TipPercentExpansionTile extends StatelessWidget {
     );
   }
 
+  String _formatPercent(double n) {
+    return n.toStringAsFixed(n.truncateToDouble() == n ? 0 : 2);
+  }
+
   Widget buildOption(BuildContext context, int value) {
     var tipProvider = Provider.of<TipProvider>(context);
 
     return ExpansionTileOption(
       text: '$value%',
       onTap: () {
-        tipProvider.tipPercent = value;
+        tipProvider.tipPercent = value.toDouble();
         onTap();
       },
     );
