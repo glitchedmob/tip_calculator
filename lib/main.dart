@@ -11,20 +11,18 @@ Future main() async {
 
   var errorTracker = ErrorTracker();
 
-  FlutterError.onError = (FlutterErrorDetails details) async {
+  FlutterError.onError = (FlutterErrorDetails details, {bool forceReport = false}) async {
     if (isInDebugMode) {
-      FlutterError.dumpErrorToConsole(details);
+      FlutterError.dumpErrorToConsole(details, forceReport: forceReport);
     } else {
-      Zone.current.handleUncaughtError(details.exception, details.stack);
+      errorTracker.reportError(details.exception, details.stack);
     }
   };
 
-  runZoned<Future<Null>>(
-        () async {
-      runApp(App());
-    },
-    onError: (error, stackTrace) async {
-      await errorTracker.reportError(error, stackTrace);
+  runZoned(
+    () => runApp(App()),
+    onError: (error, stackTrace) {
+      errorTracker.reportError(error, stackTrace);
     },
   );
 }

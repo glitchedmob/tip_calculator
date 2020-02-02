@@ -6,8 +6,6 @@ import 'package:tip_calculator/widgets/keypad.dart';
 class CalculatorScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).size.width);
-
     return Scaffold(
       body: MediaQuery.of(context).orientation == Orientation.portrait
           ? buildPortrait(context)
