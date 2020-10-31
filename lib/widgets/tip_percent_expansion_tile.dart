@@ -40,7 +40,7 @@ class TipPercentExpansionTile extends StatelessWidget {
   }
 
   Widget buildOption(BuildContext context, int value) {
-    var tipProvider = Provider.of<TipProvider>(context);
+    var tipProvider = context.watch<TipProvider>();
 
     return ExpansionTileOption(
       text: '$value%',

@@ -37,7 +37,7 @@ class TipProvider extends ChangeNotifier {
   }
 
   void roundTipAmountToNearest(int amount) {
-    if(billAmount <= 0) {
+    if (billAmount <= 0) {
       return;
     }
 
@@ -47,7 +47,7 @@ class TipProvider extends ChangeNotifier {
   }
 
   void roundBillTotalToNearest(int amount) {
-    if(billAmount <= 0) {
+    if (billAmount <= 0) {
       return;
     }
 
@@ -59,7 +59,7 @@ class TipProvider extends ChangeNotifier {
   }
 
   int _roundValueToNearest(int value, int amount) {
-    if(value < amount) {
+    if (value < amount) {
       return amount;
     }
 

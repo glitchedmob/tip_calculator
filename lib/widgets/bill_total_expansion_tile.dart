@@ -10,11 +10,15 @@ class BillTotalExpansionTile extends StatelessWidget {
   final bool expanded;
   final GestureTapCallback onTap;
 
-  const BillTotalExpansionTile({Key key, this.expanded, this.onTap}) : super(key: key);
+  const BillTotalExpansionTile({
+    Key key,
+    this.expanded,
+    this.onTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var tipProvider = Provider.of<TipProvider>(context);
+    var tipProvider = context.watch<TipProvider>();
 
     return AppExpansionTile(
       expanded: expanded,
@@ -39,7 +43,7 @@ class BillTotalExpansionTile extends StatelessWidget {
   }
 
   Widget buildOption(BuildContext context, int value) {
-    var tipProvider = Provider.of<TipProvider>(context);
+    var tipProvider = context.watch<TipProvider>();
 
     return ExpansionTileOption(
       text: '\$$value',

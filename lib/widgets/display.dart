@@ -26,19 +26,18 @@ class _ResultDisplayState extends State<ResultDisplay> {
             child: BillAmountInput(),
           ),
           Padding(
-            padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
-            child: TipPercentExpansionTile(
-              expanded: tipPercentExpanded,
-              onTap: () {
-                setState(() {
-                  tipPercentExpanded = !tipPercentExpanded;
+              padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+              child: TipPercentExpansionTile(
+                expanded: tipPercentExpanded,
+                onTap: () {
+                  setState(() {
+                    tipPercentExpanded = !tipPercentExpanded;
 
-                  tipAmountExpanded = false;
-                  totalAmountExpanded = false;
-                });
-              },
-            )
-          ),
+                    tipAmountExpanded = false;
+                    totalAmountExpanded = false;
+                  });
+                },
+              )),
           Padding(
             padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
             child: TipAmountExpansionTile(
@@ -72,4 +71,3 @@ class _ResultDisplayState extends State<ResultDisplay> {
     );
   }
 }
-

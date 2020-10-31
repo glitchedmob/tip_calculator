@@ -55,7 +55,10 @@ class Keypad extends StatelessWidget {
     Widget content;
 
     if (child == null) {
-      content = Text(command, style: TextStyle(fontSize: 25),);
+      content = Text(
+        command,
+        style: TextStyle(fontSize: 25),
+      );
     } else {
       content = child;
     }
@@ -65,7 +68,9 @@ class Keypad extends StatelessWidget {
       height: 85,
       child: FlatButton(
         shape: CircleBorder(),
-        color: accent ? Theme.of(context).accentColor : Theme.of(context).primaryColor,
+        color: accent
+            ? Theme.of(context).accentColor
+            : Theme.of(context).primaryColor,
         child: content,
         onPressed: () {
           onKeyPress(context, command);
@@ -77,7 +82,7 @@ class Keypad extends StatelessWidget {
   onKeyPress(BuildContext context, String command) {
     var tipProvider = context.read<TipProvider>();
 
-    if(command == 'AC') {
+    if (command == 'AC') {
       tipProvider.reset();
       vibrateLong();
       return;
@@ -85,8 +90,8 @@ class Keypad extends StatelessWidget {
 
     var text = tipProvider.billAmount.toString();
 
-    if(command == 'DEL') {
-      if(text == '0') {
+    if (command == 'DEL') {
+      if (text == '0') {
         vibrateLong();
         return;
       }
@@ -95,22 +100,22 @@ class Keypad extends StatelessWidget {
       text = '$text$command';
     }
 
-    if(text.length >= 10) {
+    if (text.length >= 10) {
       vibrateLong();
       return;
     }
-    
+
     vibrateShort();
 
     tipProvider.billAmount = int.tryParse(text) ?? 0;
   }
-  
+
   vibrateShort() {
-    if(Platform.isAndroid) {
+    if (Platform.isAndroid) {
       Vibration.vibrate(duration: 50, amplitude: 20);
     }
   }
-  
+
   vibrateLong() {
     Vibration.vibrate(duration: 200);
   }

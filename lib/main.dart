@@ -5,7 +5,6 @@ import 'package:tip_calculator/env.dart';
 import 'package:tip_calculator/utils/utils.dart';
 import 'package:tip_calculator/app.dart';
 
-
 Future main() async {
   if (getEnvironment() == 'debug') {
     return start();
