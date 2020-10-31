@@ -26,5 +26,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <meta-data
+            android:name="io.sentry.dsn"
+            android:value="${sentryDsn}" />
     </application>
 </manifest>
