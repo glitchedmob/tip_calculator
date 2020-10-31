@@ -12,7 +12,7 @@ Future main() async {
   }
 
   return FlutterSentry.wrap(
-    () => start,
+    () async => start(),
     dsn: Env.sentryDsn,
   );
 }
