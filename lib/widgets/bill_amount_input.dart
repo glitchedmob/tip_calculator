@@ -7,7 +7,7 @@ import 'package:tip_calculator/utils/money.dart';
 class BillAmountInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var tipProvider = Provider.of<TipProvider>(context);
+    var tipProvider = context.watch<TipProvider>();
 
     return Container(
       decoration: BoxDecoration(

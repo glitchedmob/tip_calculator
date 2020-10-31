@@ -75,7 +75,7 @@ class Keypad extends StatelessWidget {
   }
 
   onKeyPress(BuildContext context, String command) {
-    var tipProvider = Provider.of<TipProvider>(context, listen: false);
+    var tipProvider = context.read<TipProvider>();
 
     if(command == 'AC') {
       tipProvider.reset();

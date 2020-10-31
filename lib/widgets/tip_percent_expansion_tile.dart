@@ -14,7 +14,7 @@ class TipPercentExpansionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var tipProvider = Provider.of<TipProvider>(context);
+    var tipProvider = context.watch<TipProvider>();
 
     return AppExpansionTile(
       expanded: expanded,
