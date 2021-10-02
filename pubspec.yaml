@@ -12,6 +12,7 @@ description: A new Flutter project.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 version: 1.0.1+3
+publish_to: 'none'
 
 environment:
   sdk: ">=2.10.0 <3.0.0"
@@ -23,7 +24,9 @@ dependencies:
   # Using custom version of this library that makes the ConfigurableExpansionTileState class public
   # as well as it's handleTap method. This allows outside widgets programmatic control
   configurable_expansion_tile:
-    git: git://github.com/glitchedmob/configurable_expansion_tile.git
+    git:
+      url: git://github.com/glitchedmob/configurable_expansion_tile.git
+      ref: 20f9e0480caac035fc5d8a2b9b2d6d1bdf115617
   provider: ^6.0.1
   money2: ^2.2.2
   vibration: ^1.7.4-nullsafety.0

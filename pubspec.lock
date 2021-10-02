@@ -47,11 +47,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: HEAD
-      resolved-ref: "9e1881f1fe44bac017f24e367e21b528532c2620"
+      ref: "20f9e0480caac035fc5d8a2b9b2d6d1bdf115617"
+      resolved-ref: "20f9e0480caac035fc5d8a2b9b2d6d1bdf115617"
       url: "git://github.com/glitchedmob/configurable_expansion_tile.git"
     source: git
-    version: "1.0.0"
+    version: "2.0.0"
   crypto:
     dependency: transitive
     description:

@@ -37,7 +37,7 @@ class _AppExpansionTileState extends State<AppExpansionTile> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(15),
       child: Container(
-        color: Theme.of(context).accentColor,
+        color: Theme.of(context).colorScheme.secondary,
         child: ConfigurableExpansionTile(
           key: expansionTileKey,
           initiallyExpanded: widget.expanded,
