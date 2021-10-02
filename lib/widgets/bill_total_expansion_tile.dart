@@ -12,7 +12,7 @@ class BillTotalExpansionTile extends StatelessWidget {
 
   const BillTotalExpansionTile({
     Key key,
-    this.expanded,
+    this.expanded = false,
     this.onTap,
   }) : super(key: key);
 
@@ -49,7 +49,7 @@ class BillTotalExpansionTile extends StatelessWidget {
       text: '\$$value',
       onTap: () {
         tipProvider.roundBillTotalToNearest(value * 100);
-        onTap();
+          onTap?.call();
       },
     );
   }

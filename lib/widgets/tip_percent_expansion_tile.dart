@@ -9,7 +9,7 @@ class TipPercentExpansionTile extends StatelessWidget {
   final bool expanded;
   final GestureTapCallback onTap;
 
-  const TipPercentExpansionTile({Key key, this.expanded, this.onTap})
+  const TipPercentExpansionTile({Key key, this.expanded = false, this.onTap})
       : super(key: key);
 
   @override
@@ -46,7 +46,7 @@ class TipPercentExpansionTile extends StatelessWidget {
       text: '$value%',
       onTap: () {
         tipProvider.tipPercent = value.toDouble();
-        onTap();
+        onTap?.call();
       },
     );
   }

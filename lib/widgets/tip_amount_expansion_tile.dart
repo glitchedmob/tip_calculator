@@ -7,7 +7,7 @@ import 'package:tip_calculator/widgets/app_expansion_tile.dart';
 import 'package:tip_calculator/widgets/expansion_tile_option.dart';
 
 class TipAmountExpansionTile extends StatelessWidget {
-  final bool expanded;
+  final bool/*!*/ expanded;
   final GestureTapCallback onTap;
 
   const TipAmountExpansionTile({
@@ -49,7 +49,7 @@ class TipAmountExpansionTile extends StatelessWidget {
       text: '\$$value',
       onTap: () {
         tipProvider.roundTipAmountToNearest(value * 100);
-        onTap();
+        onTap?.call();
       },
     );
   }
