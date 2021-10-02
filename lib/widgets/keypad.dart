@@ -40,7 +40,7 @@ class Keypad extends StatelessWidget {
     );
   }
 
-  Widget buildRow({List<Widget> children}) {
+  Widget buildRow({required List<Widget> children}) {
     return Padding(
       padding: EdgeInsets.only(bottom: 10),
       child: Row(
@@ -51,7 +51,7 @@ class Keypad extends StatelessWidget {
   }
 
   Widget buildButton(BuildContext context, String command,
-      {Widget child, bool accent = false}) {
+      {Widget? child, bool accent = false}) {
     Widget content;
 
     if (child == null) {

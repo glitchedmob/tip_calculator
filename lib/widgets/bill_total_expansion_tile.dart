@@ -8,10 +8,10 @@ import 'package:tip_calculator/widgets/expansion_tile_option.dart';
 
 class BillTotalExpansionTile extends StatelessWidget {
   final bool expanded;
-  final GestureTapCallback onTap;
+  final GestureTapCallback? onTap;
 
   const BillTotalExpansionTile({
-    Key key,
+    Key? key,
     this.expanded = false,
     this.onTap,
   }) : super(key: key);

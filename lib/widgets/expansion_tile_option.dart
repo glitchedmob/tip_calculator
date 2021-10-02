@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class ExpansionTileOption extends StatelessWidget {
-  final String/*!*/ text;
-  final GestureTapCallback onTap;
+  final String text;
+  final GestureTapCallback? onTap;
 
-  const ExpansionTileOption({Key key, this.text, this.onTap}) : super(key: key);
+  const ExpansionTileOption({Key? key, required this.text, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

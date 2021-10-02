@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:configurable_expansion_tile/configurable_expansion_tile.dart';
 
 class AppExpansionTile extends StatefulWidget {
-  final Widget/*!*/ header;
-  final List<Widget>/*!*/ children;
-  final GestureTapCallback onHeaderTap;
-  final bool/*!*/ expanded;
+  final Widget header;
+  final List<Widget> children;
+  final GestureTapCallback? onHeaderTap;
+  final bool expanded;
 
   const AppExpansionTile({
-    Key key,
-    this.header,
-    this.children,
+    Key? key,
+    required this.header,
+    required this.children,
     this.onHeaderTap,
     this.expanded = false,
   }) : super(key: key);

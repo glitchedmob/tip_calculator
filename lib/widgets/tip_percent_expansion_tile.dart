@@ -7,9 +7,9 @@ import 'package:tip_calculator/widgets/expansion_tile_option.dart';
 
 class TipPercentExpansionTile extends StatelessWidget {
   final bool expanded;
-  final GestureTapCallback onTap;
+  final GestureTapCallback? onTap;
 
-  const TipPercentExpansionTile({Key key, this.expanded = false, this.onTap})
+  const TipPercentExpansionTile({Key? key, this.expanded = false, this.onTap})
       : super(key: key);
 
   @override

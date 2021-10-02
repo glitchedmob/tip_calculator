@@ -18,7 +18,8 @@ class _ResultDisplayState extends State<ResultDisplay> {
   @override
   Widget build(BuildContext context) {
     return DefaultTextStyle(
-      style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 20),
+      style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 20) ??
+          TextStyle(),
       child: ListView(
         children: <Widget>[
           Padding(

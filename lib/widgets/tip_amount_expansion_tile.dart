@@ -7,12 +7,12 @@ import 'package:tip_calculator/widgets/app_expansion_tile.dart';
 import 'package:tip_calculator/widgets/expansion_tile_option.dart';
 
 class TipAmountExpansionTile extends StatelessWidget {
-  final bool/*!*/ expanded;
-  final GestureTapCallback onTap;
+  final bool expanded;
+  final GestureTapCallback? onTap;
 
   const TipAmountExpansionTile({
-    Key key,
-    this.expanded,
+    Key? key,
+    required this.expanded,
     this.onTap,
   }) : super(key: key);
 
