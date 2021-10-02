@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sentry/flutter_sentry.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'package:tip_calculator/env.dart';
 import 'package:tip_calculator/utils/utils.dart';
@@ -10,9 +10,11 @@ Future main() async {
     return start();
   }
 
-  return FlutterSentry.wrap(
-    () async => start(),
-    dsn: Env.sentryDsn,
+  return SentryFlutter.init(
+    (options) {
+      options.dsn = Env.sentryDsn;
+    },
+    appRunner: start,
   );
 }
 

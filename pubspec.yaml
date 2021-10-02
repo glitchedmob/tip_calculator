@@ -19,16 +19,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_dotenv: ^2.1.0
-  google_fonts: ^1.1.1
+  google_fonts: ^2.1.0
   # Using custom version of this library that makes the ConfigurableExpansionTileState class public
   # as well as it's handleTap method. This allows outside widgets programmatic control
   configurable_expansion_tile:
     git: git://github.com/glitchedmob/configurable_expansion_tile.git
-  provider: ^4.3.2
-  money2: ^1.4.3
-  vibration: ^1.7.1
-  flutter_sentry: ^0.4.4
+  provider: ^6.0.1
+  money2: ^2.2.2
+  vibration: ^1.7.4-nullsafety.0
+  sentry_flutter: ^6.0.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
