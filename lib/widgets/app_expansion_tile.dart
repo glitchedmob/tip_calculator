@@ -44,11 +44,9 @@ class _AppExpansionTileState extends State<AppExpansionTile> {
           animatedWidgetFollowingHeader: GestureDetector(
             onTap: widget.onHeaderTap,
             behavior: HitTestBehavior.opaque,
-            child: Container(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5, vertical: 11),
-                child: Icon(Icons.expand_more),
-              ),
+            child: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 11),
+              child: Icon(Icons.expand_more),
             ),
           ),
           header: Expanded(
@@ -56,7 +54,7 @@ class _AppExpansionTileState extends State<AppExpansionTile> {
               onTap: widget.onHeaderTap,
               behavior: HitTestBehavior.opaque,
               child: Padding(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 child: widget.header,
               ),
             ),

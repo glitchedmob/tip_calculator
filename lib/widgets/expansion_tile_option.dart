@@ -10,17 +10,17 @@ class ExpansionTileOption extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           border: Border(
             top: BorderSide(width: 3, color: Colors.black),
           ),
         ),
         child: Padding(
-          padding: EdgeInsets.only(top: 10, bottom: 10, right: 45),
+          padding: const EdgeInsets.only(top: 10, bottom: 10, right: 45),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-              Text(text, style: TextStyle(fontSize: 20)),
+              Text(text, style: const TextStyle(fontSize: 20)),
             ],
           ),
         ),

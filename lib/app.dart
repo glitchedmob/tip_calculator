@@ -6,6 +6,8 @@ import 'package:tip_calculator/theme.dart';
 import 'package:tip_calculator/screens/calculator.dart';
 
 class App extends StatefulWidget {
+  const App({Key? key}) : super(key: key);
+
   @override
   _AppState createState() => _AppState();
 }

@@ -6,6 +6,8 @@ import 'package:tip_calculator/widgets/tip_amount_expansion_tile.dart';
 import 'package:tip_calculator/widgets/tip_percent_expansion_tile.dart';
 
 class ResultDisplay extends StatefulWidget {
+  const ResultDisplay({Key? key}) : super(key: key);
+
   @override
   _ResultDisplayState createState() => _ResultDisplayState();
 }
@@ -19,15 +21,15 @@ class _ResultDisplayState extends State<ResultDisplay> {
   Widget build(BuildContext context) {
     return DefaultTextStyle(
       style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 20) ??
-          TextStyle(),
+          const TextStyle(),
       child: ListView(
         children: <Widget>[
-          Padding(
+          const Padding(
             padding: EdgeInsets.only(left: 20, right: 20, top: 45, bottom: 20),
             child: BillAmountInput(),
           ),
           Padding(
-              padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
               child: TipPercentExpansionTile(
                 expanded: tipPercentExpanded,
                 onTap: () {
@@ -40,7 +42,7 @@ class _ResultDisplayState extends State<ResultDisplay> {
                 },
               )),
           Padding(
-            padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
             child: TipAmountExpansionTile(
               expanded: tipAmountExpanded,
               onTap: () {
@@ -54,7 +56,7 @@ class _ResultDisplayState extends State<ResultDisplay> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
             child: BillTotalExpansionTile(
               expanded: totalAmountExpanded,
               onTap: () {

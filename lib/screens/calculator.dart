@@ -4,6 +4,8 @@ import 'package:tip_calculator/widgets/display.dart';
 import 'package:tip_calculator/widgets/keypad.dart';
 
 class CalculatorScreen extends StatelessWidget {
+  const CalculatorScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +20,7 @@ class CalculatorScreen extends StatelessWidget {
       children: <Widget>[
         Expanded(child: ResultDisplay()),
         Container(height: 3, color: Theme.of(context).primaryColor),
-        Padding(padding: EdgeInsets.only(bottom: 30)),
+        const Padding(padding: EdgeInsets.only(bottom: 30)),
         Keypad(),
       ],
     );

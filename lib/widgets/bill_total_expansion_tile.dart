@@ -26,12 +26,12 @@ class BillTotalExpansionTile extends StatelessWidget {
       header: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text('Total Amount'),
+          const Text('Total Amount'),
           Text(formatCents(tipProvider.billTotal)),
         ],
       ),
       children: <Widget>[
-        Padding(
+        const Padding(
           padding: EdgeInsets.symmetric(vertical: 10),
           child: Text('Round Up To Nearest:'),
         ),

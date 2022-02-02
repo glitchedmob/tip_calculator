@@ -7,6 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:tip_calculator/provider/tip_provider.dart';
 
 class Keypad extends StatelessWidget {
+  const Keypad({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -33,7 +35,7 @@ class Keypad extends StatelessWidget {
             context,
             'DEL',
             accent: true,
-            child: Icon(Icons.backspace, size: 40),
+            child: const Icon(Icons.backspace, size: 40),
           ),
         ]),
       ],
@@ -42,7 +44,7 @@ class Keypad extends StatelessWidget {
 
   Widget buildRow({required List<Widget> children}) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(bottom: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: children,
@@ -57,7 +59,7 @@ class Keypad extends StatelessWidget {
     if (child == null) {
       content = Text(
         command,
-        style: TextStyle(fontSize: 25),
+        style: const TextStyle(fontSize: 25),
       );
     } else {
       content = child;
@@ -66,11 +68,13 @@ class Keypad extends StatelessWidget {
     return SizedBox(
       width: 85,
       height: 85,
-      child: FlatButton(
-        shape: CircleBorder(),
-        color: accent
-            ? Theme.of(context).accentColor
-            : Theme.of(context).primaryColor,
+      child: OutlinedButton(
+        style: OutlinedButton.styleFrom(
+            shape: const CircleBorder(),
+            primary: Theme.of(context).textTheme.bodyText1?.color,
+            backgroundColor: accent
+                ? Theme.of(context).colorScheme.secondary
+                : Theme.of(context).primaryColor),
         child: content,
         onPressed: () {
           onKeyPress(context, command);
