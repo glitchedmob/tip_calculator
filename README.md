@@ -1,6 +1,6 @@
 # tip_calculator
 
-A tip calculator app written in flutter 
+A tip calculator app written in flutter
 
 ## Getting Started
 
