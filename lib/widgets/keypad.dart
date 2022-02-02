@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:vibration/vibration.dart';
 
 import 'package:tip_calculator/provider/tip_provider.dart';
 
@@ -111,12 +111,16 @@ class Keypad extends StatelessWidget {
   }
 
   vibrateShort() {
-    if (Platform.isAndroid) {
-      Vibration.vibrate(duration: 50, amplitude: 20);
-    }
+    HapticFeedback.selectionClick();
   }
 
   vibrateLong() {
-    Vibration.vibrate(duration: 200);
+    if (Platform.isAndroid) {
+      HapticFeedback.vibrate();
+    }
+
+    if (Platform.isIOS) {
+      HapticFeedback.mediumImpact();
+    }
   }
 }

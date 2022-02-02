@@ -38,7 +38,6 @@ dependencies:
       ref: 20f9e0480caac035fc5d8a2b9b2d6d1bdf115617
   provider: ^6.0.1
   money2: ^2.2.2
-  vibration: ^1.7.4-nullsafety.0
   sentry_flutter: ^6.0.1
 
   # The following adds the Cupertino Icons font to your application.
