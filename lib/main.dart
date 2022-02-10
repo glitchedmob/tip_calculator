@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'package:tip_calculator/env.dart';
-import 'package:tip_calculator/utils/utils.dart';
 import 'package:tip_calculator/app.dart';
 
 Future main() async {
-  if (getEnvironment() == 'debug') {
+  if (!Env.enableErrorTracking) {
     return start();
   }
 
@@ -19,5 +18,5 @@ Future main() async {
 }
 
 void start() {
-  runApp(App());
+  runApp(const App());
 }
