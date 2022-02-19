@@ -33,3 +33,5 @@ Runner/Config.xcconfig
 !default.mode2v3
 !default.pbxuser
 !default.perspectivev3
+
+Runner/GoogleService-Info.plist

@@ -1,3 +1,5 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
@@ -17,6 +19,14 @@ Future main() async {
   );
 }
 
-void start() {
+Future start() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp();
+
+  if (!Env.enableAnalytics) {
+    await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(false);
+  }
+
   runApp(const App());
 }

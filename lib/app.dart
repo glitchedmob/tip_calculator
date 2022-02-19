@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tip_calculator/provider/tip_provider.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
+import 'package:tip_calculator/provider/tip_provider.dart';
 import 'package:tip_calculator/theme.dart';
 import 'package:tip_calculator/screens/calculator.dart';
 
@@ -13,6 +14,17 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  static final _analyticsObserver = FirebaseAnalyticsObserver(
+    analytics: FirebaseAnalytics.instance,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+
+    FirebaseAnalytics.instance.logAppOpen().then((_) {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -21,6 +33,7 @@ class _AppState extends State<App> {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        navigatorObservers: [_analyticsObserver],
         theme: appTheme(context),
         home: CalculatorScreen(),
       ),
