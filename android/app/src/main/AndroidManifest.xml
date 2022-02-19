@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.tip_calculator">
+    package="com.example.tipcalculator">
 
     <application
         android:name="${applicationName}"
