@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:provider/provider.dart';
 
 import 'package:tip_calculator/provider/tip_provider.dart';
-import 'package:tip_calculator/theme.dart';
 import 'package:tip_calculator/screens/calculator.dart';
+import 'package:tip_calculator/theme.dart';
 
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);

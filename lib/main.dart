@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
-import 'package:tip_calculator/env.dart';
 import 'package:tip_calculator/app.dart';
+import 'package:tip_calculator/env.dart';
 
 Future main() async {
   if (!Env.enableErrorTracking) {
