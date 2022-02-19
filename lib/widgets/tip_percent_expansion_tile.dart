@@ -30,10 +30,10 @@ class TipPercentExpansionTile extends StatelessWidget {
         ],
       ),
       children: <Widget>[
-        buildOption(context, 10),
-        buildOption(context, 15),
-        buildOption(context, 20),
-        buildOption(context, 25),
+        _buildOption(context, 10),
+        _buildOption(context, 15),
+        _buildOption(context, 20),
+        _buildOption(context, 25),
       ],
     );
   }
@@ -42,7 +42,7 @@ class TipPercentExpansionTile extends StatelessWidget {
     return n.toStringAsFixed(n.truncateToDouble() == n ? 0 : 2);
   }
 
-  Widget buildOption(BuildContext context, int value) {
+  Widget _buildOption(BuildContext context, int value) {
     var tipProvider = context.watch<TipProvider>();
 
     return ExpansionTileOption(

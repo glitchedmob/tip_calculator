@@ -9,13 +9,18 @@ class CalculatorScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: MediaQuery.of(context).orientation == Orientation.portrait
-          ? buildPortrait(context)
-          : buildLandscape(context),
+      body: SafeArea(
+        left: false,
+        right: false,
+        top: false,
+        child: MediaQuery.of(context).orientation == Orientation.portrait
+            ? _buildPortrait(context)
+            : _buildLandscape(context),
+      ),
     );
   }
 
-  Widget buildPortrait(BuildContext context) {
+  Widget _buildPortrait(BuildContext context) {
     return Column(
       children: <Widget>[
         Expanded(child: ResultDisplay()),
@@ -26,7 +31,7 @@ class CalculatorScreen extends StatelessWidget {
     );
   }
 
-  Widget buildLandscape(BuildContext context) {
+  Widget _buildLandscape(BuildContext context) {
     return Row(
       children: <Widget>[
         Expanded(

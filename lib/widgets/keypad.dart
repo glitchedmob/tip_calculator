@@ -13,25 +13,25 @@ class Keypad extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        buildRow(children: <Widget>[
-          buildButton(context, '7'),
-          buildButton(context, '8'),
-          buildButton(context, '9'),
+        _buildRow(children: <Widget>[
+          _buildButton(context, '7'),
+          _buildButton(context, '8'),
+          _buildButton(context, '9'),
         ]),
-        buildRow(children: <Widget>[
-          buildButton(context, '4'),
-          buildButton(context, '5'),
-          buildButton(context, '6'),
+        _buildRow(children: <Widget>[
+          _buildButton(context, '4'),
+          _buildButton(context, '5'),
+          _buildButton(context, '6'),
         ]),
-        buildRow(children: <Widget>[
-          buildButton(context, '1'),
-          buildButton(context, '2'),
-          buildButton(context, '3'),
+        _buildRow(children: <Widget>[
+          _buildButton(context, '1'),
+          _buildButton(context, '2'),
+          _buildButton(context, '3'),
         ]),
-        buildRow(children: <Widget>[
-          buildButton(context, 'AC', accent: true),
-          buildButton(context, '0'),
-          buildButton(
+        _buildRow(children: <Widget>[
+          _buildButton(context, 'AC', accent: true),
+          _buildButton(context, '0'),
+          _buildButton(
             context,
             'DEL',
             accent: true,
@@ -42,7 +42,7 @@ class Keypad extends StatelessWidget {
     );
   }
 
-  Widget buildRow({required List<Widget> children}) {
+  Widget _buildRow({required List<Widget> children}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: Row(
@@ -52,7 +52,7 @@ class Keypad extends StatelessWidget {
     );
   }
 
-  Widget buildButton(BuildContext context, String command,
+  Widget _buildButton(BuildContext context, String command,
       {Widget? child, bool accent = false}) {
     Widget content;
 
@@ -77,18 +77,18 @@ class Keypad extends StatelessWidget {
                 : Theme.of(context).primaryColor),
         child: content,
         onPressed: () {
-          onKeyPress(context, command);
+          _onKeyPress(context, command);
         },
       ),
     );
   }
 
-  onKeyPress(BuildContext context, String command) {
+  _onKeyPress(BuildContext context, String command) {
     var tipProvider = context.read<TipProvider>();
 
     if (command == 'AC') {
       tipProvider.reset();
-      vibrateLong();
+      _vibrateLong();
       return;
     }
 
@@ -96,7 +96,7 @@ class Keypad extends StatelessWidget {
 
     if (command == 'DEL') {
       if (text == '0') {
-        vibrateLong();
+        _vibrateLong();
         return;
       }
       text = text.substring(0, text.length - 1);
@@ -105,20 +105,20 @@ class Keypad extends StatelessWidget {
     }
 
     if (text.length >= 10) {
-      vibrateLong();
+      _vibrateLong();
       return;
     }
 
-    vibrateShort();
+    _vibrateShort();
 
     tipProvider.billAmount = int.tryParse(text) ?? 0;
   }
 
-  vibrateShort() {
+  _vibrateShort() {
     HapticFeedback.selectionClick();
   }
 
-  vibrateLong() {
+  _vibrateLong() {
     if (Platform.isAndroid) {
       HapticFeedback.vibrate();
     }
