@@ -9,7 +9,7 @@ class ResultDisplay extends StatefulWidget {
   const ResultDisplay({Key? key}) : super(key: key);
 
   @override
-  _ResultDisplayState createState() => _ResultDisplayState();
+  State<ResultDisplay> createState() => _ResultDisplayState();
 }
 
 class _ResultDisplayState extends State<ResultDisplay> {
@@ -20,7 +20,7 @@ class _ResultDisplayState extends State<ResultDisplay> {
   @override
   Widget build(BuildContext context) {
     return DefaultTextStyle(
-      style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 20) ??
+      style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 20) ??
           const TextStyle(),
       child: ListView(
         children: <Widget>[

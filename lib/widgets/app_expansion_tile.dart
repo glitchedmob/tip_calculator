@@ -17,7 +17,7 @@ class AppExpansionTile extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _AppExpansionTileState createState() => _AppExpansionTileState();
+  State<AppExpansionTile> createState() => _AppExpansionTileState();
 }
 
 class _AppExpansionTileState extends State<AppExpansionTile> {

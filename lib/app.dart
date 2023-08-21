@@ -11,7 +11,7 @@ class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
 
   @override
-  _AppState createState() => _AppState();
+  State<App> createState() => _AppState();
 }
 
 class _AppState extends State<App> {
@@ -36,7 +36,7 @@ class _AppState extends State<App> {
         debugShowCheckedModeBanner: false,
         navigatorObservers: [_analyticsObserver],
         theme: appTheme(context),
-        home: CalculatorScreen(),
+        home: const CalculatorScreen(),
       ),
     );
   }

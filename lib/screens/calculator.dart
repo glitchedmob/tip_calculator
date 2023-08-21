@@ -23,10 +23,10 @@ class CalculatorScreen extends StatelessWidget {
   Widget _buildPortrait(BuildContext context) {
     return Column(
       children: <Widget>[
-        Expanded(child: ResultDisplay()),
+        const Expanded(child: ResultDisplay()),
         Container(height: 3, color: Theme.of(context).primaryColor),
         const Padding(padding: EdgeInsets.only(bottom: 30)),
-        Keypad(),
+        const Keypad(),
       ],
     );
   }
@@ -34,12 +34,12 @@ class CalculatorScreen extends StatelessWidget {
   Widget _buildLandscape(BuildContext context) {
     return Row(
       children: <Widget>[
-        Expanded(
+        const Expanded(
           flex: 3,
           child: ResultDisplay(),
         ),
         Container(width: 3, color: Theme.of(context).primaryColor),
-        Expanded(
+        const Expanded(
           flex: 2,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

@@ -10,13 +10,13 @@ ThemeData appTheme(BuildContext context) {
   final theme = Theme.of(context);
 
   return ThemeData(
-    backgroundColor: background,
     scaffoldBackgroundColor: background,
     textTheme: GoogleFonts.robotoMonoTextTheme(Typography.whiteMountainView),
     colorScheme: theme.colorScheme.copyWith(
       primary: primary,
       secondary: Colors.blue,
       brightness: Brightness.dark,
+      background: background,
     ),
   );
 }
