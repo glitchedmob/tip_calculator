@@ -34,7 +34,7 @@ dependencies:
   # as well as it's handleTap method. This allows outside widgets programmatic control
   configurable_expansion_tile:
     git:
-      url: git@github.com:glitchedmob/configurable_expansion_tile.git
+      url: https://github.com/glitchedmob/configurable_expansion_tile.git
       ref: 14e81924987e0c9dd7be832b35d8493184112935
   provider: ^6.0.5
   money2: ^4.0.0

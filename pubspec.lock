@@ -87,7 +87,7 @@ packages:
       path: "."
       ref: "14e81924987e0c9dd7be832b35d8493184112935"
       resolved-ref: "14e81924987e0c9dd7be832b35d8493184112935"
-      url: "git@github.com:glitchedmob/configurable_expansion_tile.git"
+      url: "https://github.com/glitchedmob/configurable_expansion_tile.git"
     source: git
     version: "2.0.0"
   convert:
