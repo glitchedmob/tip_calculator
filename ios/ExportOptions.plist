@@ -11,10 +11,8 @@
 	<key>provisioningProfiles</key>
 	<dict>
 		<key>com.levizitting.tipcalculator</key>
-		<string>Tip Calculator App Store</string>
+		<string>7fa2c3f6-f2e4-4875-92d8-6154147214ed</string>
 	</dict>
-	<key>signingCertificate</key>
-	<string>Apple Distribution</string>
 	<key>signingStyle</key>
 	<string>manual</string>
 	<key>stripSwiftSymbols</key>
