@@ -24,7 +24,7 @@ class CalculatorScreen extends StatelessWidget {
     return Column(
       children: <Widget>[
         const Expanded(child: ResultDisplay()),
-        Container(height: 3, color: Theme.of(context).primaryColor),
+        Container(height: 3, color: Theme.of(context).colorScheme.primary),
         const Padding(padding: EdgeInsets.only(bottom: 30)),
         const Keypad(),
       ],
@@ -38,7 +38,7 @@ class CalculatorScreen extends StatelessWidget {
           flex: 3,
           child: ResultDisplay(),
         ),
-        Container(width: 3, color: Theme.of(context).primaryColor),
+        Container(width: 3, color: Theme.of(context).colorScheme.primary),
         const Expanded(
           flex: 2,
           child: Column(

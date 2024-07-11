@@ -71,11 +71,12 @@ class Keypad extends StatelessWidget {
       height: 85,
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
+            side: BorderSide.none,
             shape: const CircleBorder(),
             foregroundColor: Theme.of(context).textTheme.bodyLarge?.color,
             backgroundColor: accent
                 ? Theme.of(context).colorScheme.secondary
-                : Theme.of(context).primaryColor),
+                : Theme.of(context).colorScheme.primary),
         child: content,
         onPressed: () {
           _onKeyPress(context, command);

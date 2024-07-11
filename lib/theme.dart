@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
-const primary = Color(0xff37474f);
+const primary = Color(0xff212121);
 const background = Color(0xff000000);
 const accent = Color(0xffdc5b50);
 
@@ -16,7 +16,7 @@ ThemeData appTheme(BuildContext context) {
       primary: primary,
       secondary: Colors.blue,
       brightness: Brightness.dark,
-      background: background,
+      surface: background,
     ),
   );
 }
