@@ -50,7 +50,7 @@ class BillTotalExpansionTile extends StatelessWidget {
       text: '\$$value',
       onTap: () {
         tipProvider.roundBillTotalToNearest(value * 100);
-          onTap?.call();
+        onTap?.call();
       },
     );
   }
