@@ -16,4 +16,5 @@ jobs:
       - run: flutter pub get
       - run: dart format --set-exit-if-changed .
       - run: cp ./lib/env.dart.example ./lib/env.dart
+      - run: cp ./lib/firebase_options.dart.example ./lib/firebase_options.dart
       - run: flutter analyze
