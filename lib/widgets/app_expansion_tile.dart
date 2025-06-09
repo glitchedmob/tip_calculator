@@ -9,12 +9,12 @@ class AppExpansionTile extends StatefulWidget {
   final bool expanded;
 
   const AppExpansionTile({
-    Key? key,
+    super.key,
     required this.header,
     required this.children,
     this.onHeaderTap,
     this.expanded = false,
-  }) : super(key: key);
+  });
 
   @override
   State<AppExpansionTile> createState() => _AppExpansionTileState();

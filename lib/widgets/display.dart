@@ -6,7 +6,7 @@ import 'package:tip_calculator/widgets/tip_amount_expansion_tile.dart';
 import 'package:tip_calculator/widgets/tip_percent_expansion_tile.dart';
 
 class ResultDisplay extends StatefulWidget {
-  const ResultDisplay({Key? key}) : super(key: key);
+  const ResultDisplay({super.key});
 
   @override
   State<ResultDisplay> createState() => _ResultDisplayState();

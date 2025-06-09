@@ -4,8 +4,7 @@ class ExpansionTileOption extends StatelessWidget {
   final String text;
   final GestureTapCallback? onTap;
 
-  const ExpansionTileOption({Key? key, required this.text, this.onTap})
-      : super(key: key);
+  const ExpansionTileOption({super.key, required this.text, this.onTap});
 
   @override
   Widget build(BuildContext context) {

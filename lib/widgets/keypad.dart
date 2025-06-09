@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:tip_calculator/provider/tip_provider.dart';
 
 class Keypad extends StatelessWidget {
-  const Keypad({Key? key}) : super(key: key);
+  const Keypad({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +85,7 @@ class Keypad extends StatelessWidget {
     );
   }
 
-  _onKeyPress(BuildContext context, String command) {
+  void _onKeyPress(BuildContext context, String command) {
     var tipProvider = context.read<TipProvider>();
 
     if (command == 'AC') {
@@ -116,11 +116,11 @@ class Keypad extends StatelessWidget {
     tipProvider.billAmount = int.tryParse(text) ?? 0;
   }
 
-  _vibrateShort() {
+  void _vibrateShort() {
     HapticFeedback.selectionClick();
   }
 
-  _vibrateLong() {
+  void _vibrateLong() {
     if (Platform.isAndroid) {
       HapticFeedback.vibrate();
     }

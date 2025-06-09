@@ -12,10 +12,10 @@ class TipAmountExpansionTile extends StatelessWidget {
   final GestureTapCallback onTap;
 
   const TipAmountExpansionTile({
-    Key? key,
+    super.key,
     required this.expanded,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

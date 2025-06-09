@@ -12,10 +12,10 @@ class BillTotalExpansionTile extends StatelessWidget {
   final GestureTapCallback? onTap;
 
   const BillTotalExpansionTile({
-    Key? key,
+    super.key,
     this.expanded = false,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

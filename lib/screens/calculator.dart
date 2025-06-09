@@ -4,7 +4,7 @@ import 'package:tip_calculator/widgets/display.dart';
 import 'package:tip_calculator/widgets/keypad.dart';
 
 class CalculatorScreen extends StatelessWidget {
-  const CalculatorScreen({Key? key}) : super(key: key);
+  const CalculatorScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

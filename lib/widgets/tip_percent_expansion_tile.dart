@@ -11,10 +11,10 @@ class TipPercentExpansionTile extends StatelessWidget {
   final GestureTapCallback onTap;
 
   const TipPercentExpansionTile({
-    Key? key,
+    super.key,
     required this.expanded,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
