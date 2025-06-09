@@ -32,6 +32,10 @@ jobs:
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PROVISIONING_PROFILE_PATH ~/Library/MobileDevice/Provisioning\ Profiles
           cd ~/Library/MobileDevice/Provisioning\ Profiles
+      - name: TODO - Needs updated with new firebase patterns
+        run: |
+          echo "ERROR: The pipeline doesn't create lib/firebase_options.dart and will fail"
+          exit 1
       - name: Create environment files
         env:
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
@@ -47,10 +51,11 @@ jobs:
           " > ./lib/env.dart
           echo "SENTRY_DSN=${SENTRY_DSN}" > ./ios/Runner/Config.xcconfig
           echo -n $GOOGLE_SERVICE_INFO_PLIST_BASE64 | base64 --decode > ./ios/Runner/GoogleService-Info.plist
-      - uses: subosito/flutter-action@v2
+      - uses: flutter-actions/setup-flutter@v3
         with:
-          flutter-version: '3.13.0'
-          channel: 'stable'
+          channel: stable
+          version:  3.32.2
+          cache-sdk: true
       - run: flutter pub get
       - run: flutter build ipa --release --no-codesign
       - name: Sign app
