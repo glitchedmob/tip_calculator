@@ -20,7 +20,8 @@ class _ResultDisplayState extends State<ResultDisplay> {
   @override
   Widget build(BuildContext context) {
     return DefaultTextStyle(
-      style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 20) ??
+      style:
+          Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 20) ??
           const TextStyle(),
       child: ListView(
         children: <Widget>[
@@ -29,18 +30,19 @@ class _ResultDisplayState extends State<ResultDisplay> {
             child: BillAmountInput(),
           ),
           Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-              child: TipPercentExpansionTile(
-                expanded: tipPercentExpanded,
-                onTap: () {
-                  setState(() {
-                    tipPercentExpanded = !tipPercentExpanded;
+            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+            child: TipPercentExpansionTile(
+              expanded: tipPercentExpanded,
+              onTap: () {
+                setState(() {
+                  tipPercentExpanded = !tipPercentExpanded;
 
-                    tipAmountExpanded = false;
-                    totalAmountExpanded = false;
-                  });
-                },
-              )),
+                  tipAmountExpanded = false;
+                  totalAmountExpanded = false;
+                });
+              },
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
             child: TipAmountExpansionTile(

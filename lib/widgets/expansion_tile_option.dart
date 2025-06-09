@@ -12,9 +12,7 @@ class ExpansionTileOption extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: const BoxDecoration(
-          border: Border(
-            top: BorderSide(width: 3, color: Colors.black),
-          ),
+          border: Border(top: BorderSide(width: 3, color: Colors.black)),
         ),
         child: Padding(
           padding: const EdgeInsets.only(top: 10, bottom: 10, right: 45),

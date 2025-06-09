@@ -13,12 +13,9 @@ Future main() async {
     return start();
   }
 
-  return SentryFlutter.init(
-    (options) {
-      options.dsn = Env.sentryDsn;
-    },
-    appRunner: start,
-  );
+  return SentryFlutter.init((options) {
+    options.dsn = Env.sentryDsn;
+  }, appRunner: start);
 }
 
 Future start() async {

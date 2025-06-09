@@ -29,9 +29,7 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => TipProvider()),
-      ],
+      providers: [ChangeNotifierProvider(create: (context) => TipProvider())],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         navigatorObservers: [_analyticsObserver],

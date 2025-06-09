@@ -63,10 +63,8 @@ class _AppExpansionTileState extends State<AppExpansionTile> {
           children: <Widget>[
             SizedBox(
               width: double.infinity,
-              child: Column(
-                children: widget.children,
-              ),
-            )
+              child: Column(children: widget.children),
+            ),
           ],
         ),
       ),
