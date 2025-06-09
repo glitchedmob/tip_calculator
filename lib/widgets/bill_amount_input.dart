@@ -6,7 +6,7 @@ import 'package:tip_calculator/provider/tip_provider.dart';
 import 'package:tip_calculator/utils/money.dart';
 
 class BillAmountInput extends StatelessWidget {
-  const BillAmountInput({Key? key}) : super(key: key);
+  const BillAmountInput({super.key});
 
   @override
   Widget build(BuildContext context) {

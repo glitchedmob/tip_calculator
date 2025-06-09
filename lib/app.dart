@@ -8,7 +8,7 @@ import 'package:tip_calculator/screens/calculator.dart';
 import 'package:tip_calculator/theme.dart';
 
 class App extends StatefulWidget {
-  const App({Key? key}) : super(key: key);
+  const App({super.key});
 
   @override
   State<App> createState() => _AppState();
@@ -29,9 +29,7 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => TipProvider()),
-      ],
+      providers: [ChangeNotifierProvider(create: (context) => TipProvider())],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         navigatorObservers: [_analyticsObserver],

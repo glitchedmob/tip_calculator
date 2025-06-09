@@ -8,37 +8,45 @@ import 'package:provider/provider.dart';
 import 'package:tip_calculator/provider/tip_provider.dart';
 
 class Keypad extends StatelessWidget {
-  const Keypad({Key? key}) : super(key: key);
+  const Keypad({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        _buildRow(children: <Widget>[
-          _buildButton(context, '7'),
-          _buildButton(context, '8'),
-          _buildButton(context, '9'),
-        ]),
-        _buildRow(children: <Widget>[
-          _buildButton(context, '4'),
-          _buildButton(context, '5'),
-          _buildButton(context, '6'),
-        ]),
-        _buildRow(children: <Widget>[
-          _buildButton(context, '1'),
-          _buildButton(context, '2'),
-          _buildButton(context, '3'),
-        ]),
-        _buildRow(children: <Widget>[
-          _buildButton(context, 'AC', accent: true),
-          _buildButton(context, '0'),
-          _buildButton(
-            context,
-            'DEL',
-            accent: true,
-            child: const Icon(Icons.backspace, size: 40),
-          ),
-        ]),
+        _buildRow(
+          children: <Widget>[
+            _buildButton(context, '7'),
+            _buildButton(context, '8'),
+            _buildButton(context, '9'),
+          ],
+        ),
+        _buildRow(
+          children: <Widget>[
+            _buildButton(context, '4'),
+            _buildButton(context, '5'),
+            _buildButton(context, '6'),
+          ],
+        ),
+        _buildRow(
+          children: <Widget>[
+            _buildButton(context, '1'),
+            _buildButton(context, '2'),
+            _buildButton(context, '3'),
+          ],
+        ),
+        _buildRow(
+          children: <Widget>[
+            _buildButton(context, 'AC', accent: true),
+            _buildButton(context, '0'),
+            _buildButton(
+              context,
+              'DEL',
+              accent: true,
+              child: const Icon(Icons.backspace, size: 40),
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -53,15 +61,16 @@ class Keypad extends StatelessWidget {
     );
   }
 
-  Widget _buildButton(BuildContext context, String command,
-      {Widget? child, bool accent = false}) {
+  Widget _buildButton(
+    BuildContext context,
+    String command, {
+    Widget? child,
+    bool accent = false,
+  }) {
     Widget content;
 
     if (child == null) {
-      content = Text(
-        command,
-        style: const TextStyle(fontSize: 25),
-      );
+      content = Text(command, style: const TextStyle(fontSize: 25));
     } else {
       content = child;
     }
@@ -71,12 +80,13 @@ class Keypad extends StatelessWidget {
       height: 85,
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
-            side: BorderSide.none,
-            shape: const CircleBorder(),
-            foregroundColor: Theme.of(context).textTheme.bodyLarge?.color,
-            backgroundColor: accent
-                ? Theme.of(context).colorScheme.secondary
-                : Theme.of(context).colorScheme.primary),
+          side: BorderSide.none,
+          shape: const CircleBorder(),
+          foregroundColor: Theme.of(context).textTheme.bodyLarge?.color,
+          backgroundColor: accent
+              ? Theme.of(context).colorScheme.secondary
+              : Theme.of(context).colorScheme.primary,
+        ),
         child: content,
         onPressed: () {
           _onKeyPress(context, command);
@@ -85,7 +95,7 @@ class Keypad extends StatelessWidget {
     );
   }
 
-  _onKeyPress(BuildContext context, String command) {
+  void _onKeyPress(BuildContext context, String command) {
     var tipProvider = context.read<TipProvider>();
 
     if (command == 'AC') {
@@ -116,11 +126,11 @@ class Keypad extends StatelessWidget {
     tipProvider.billAmount = int.tryParse(text) ?? 0;
   }
 
-  _vibrateShort() {
+  void _vibrateShort() {
     HapticFeedback.selectionClick();
   }
 
-  _vibrateLong() {
+  void _vibrateLong() {
     if (Platform.isAndroid) {
       HapticFeedback.vibrate();
     }

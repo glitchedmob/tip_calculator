@@ -15,10 +15,10 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.7+8
+version: 1.0.8+9
 
 environment:
-  sdk: '>=3.4.0 <4.0.0'
+  sdk: ^3.8.1
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -36,18 +36,18 @@ dependencies:
     git:
       url: https://github.com/glitchedmob/configurable_expansion_tile.git
       ref: 14e81924987e0c9dd7be832b35d8493184112935
-  provider: ^6.1.2
-  money2: ^5.1.0
-  sentry_flutter: ^8.3.0
-  firebase_analytics: ^11.1.0
-  firebase_core: ^3.1.1
+  provider: ^6.1.5
+  money2: ^6.0.2
+  sentry_flutter: ^8.14.2
+  firebase_analytics: ^11.4.6
+  firebase_core: ^3.13.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.13.1
+  flutter_launcher_icons: ^0.14.3
   import_sorter: ^4.6.0
-  flutter_lints: ^4.0.0
+  flutter_lints: ^6.0.0
 
 flutter_icons:
   image_path: 'assets/icon.png'
