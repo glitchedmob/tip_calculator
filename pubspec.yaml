@@ -29,7 +29,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  google_fonts: ^6.2.1
+  google_fonts: ^8.0.2
   # Using custom version of this library that makes the ConfigurableExpansionTileState class public
   # as well as it's handleTap method. This allows outside widgets programmatic control
   configurable_expansion_tile:
@@ -38,9 +38,9 @@ dependencies:
       ref: 14e81924987e0c9dd7be832b35d8493184112935
   provider: ^6.1.5
   money2: ^6.0.2
-  sentry_flutter: ^8.14.2
-  firebase_analytics: ^11.4.6
-  firebase_core: ^3.13.1
+  sentry_flutter: ^9.16.0
+  firebase_analytics: ^12.2.0
+  firebase_core: ^4.6.0
 
 dev_dependencies:
   flutter_test:
