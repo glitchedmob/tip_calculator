@@ -38,8 +38,8 @@ dependencies:
       ref: 14e81924987e0c9dd7be832b35d8493184112935
   provider: ^6.1.5
   money2: ^6.0.2
-  sentry_flutter: ^9.16.0
-  firebase_analytics: ^12.2.0
+  sentry_flutter: ^9.16.1
+  firebase_analytics: ^12.3.0
   firebase_core: ^4.6.0
 
 dev_dependencies:
