@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:material_ui/material_ui.dart';
 
 import 'package:tip_calculator/widgets/display.dart';
@@ -10,37 +12,53 @@ class CalculatorScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        left: false,
-        right: false,
-        top: false,
-        child: MediaQuery.of(context).orientation == Orientation.portrait
-            ? _buildPortrait(context)
-            : _buildLandscape(context),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final wide =
+                constraints.maxWidth >= 700 ||
+                (constraints.maxWidth >= 480 &&
+                    constraints.maxWidth > constraints.maxHeight);
+
+            return Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 1100),
+                child: wide
+                    ? _buildWide(constraints.maxHeight)
+                    : _buildCompact(constraints.maxHeight),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
 
-  Widget _buildPortrait(BuildContext context) {
+  Widget _buildCompact(double height) {
     return Column(
-      children: <Widget>[
+      children: [
         const Expanded(child: ResultDisplay()),
-        Container(height: 3, color: Theme.of(context).colorScheme.primary),
-        const Padding(padding: EdgeInsets.only(bottom: 30)),
-        const Keypad(),
+        const Divider(height: 3, thickness: 3, color: Color(0xff212121)),
+        SizedBox(height: math.min(30, height * 0.05)),
+        SizedBox(
+          height: math.min(Keypad.preferredHeight, height * 0.62),
+          child: const Keypad(),
+        ),
       ],
     );
   }
 
-  Widget _buildLandscape(BuildContext context) {
+  Widget _buildWide(double height) {
     return Row(
-      children: <Widget>[
+      children: [
         const Expanded(flex: 3, child: ResultDisplay()),
-        Container(width: 3, color: Theme.of(context).colorScheme.primary),
-        const Expanded(
+        const VerticalDivider(width: 3, thickness: 3, color: Color(0xff212121)),
+        Expanded(
           flex: 2,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[Keypad()],
+          child: Center(
+            child: SizedBox(
+              height: math.min(Keypad.preferredHeight, height),
+              child: const Keypad(),
+            ),
           ),
         ),
       ],

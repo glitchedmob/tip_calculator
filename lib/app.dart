@@ -33,7 +33,7 @@ class _AppState extends State<App> {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         navigatorObservers: [_analyticsObserver],
-        theme: appTheme(context),
+        theme: appTheme(),
         home: const CalculatorScreen(),
       ),
     );
