@@ -8,22 +8,26 @@ import 'package:tip_calculator/screens/calculator.dart';
 import 'package:tip_calculator/theme.dart';
 
 class App extends StatefulWidget {
-  const App({super.key});
+  const App({super.key, this.analytics});
+
+  final FirebaseAnalytics? analytics;
 
   @override
   State<App> createState() => _AppState();
 }
 
 class _AppState extends State<App> {
-  static final _analyticsObserver = FirebaseAnalyticsObserver(
-    analytics: FirebaseAnalytics.instance,
-  );
+  late final FirebaseAnalyticsObserver? _analyticsObserver;
 
   @override
   void initState() {
     super.initState();
 
-    FirebaseAnalytics.instance.logAppOpen().then((_) {});
+    final analytics = widget.analytics;
+    _analyticsObserver = analytics == null
+        ? null
+        : FirebaseAnalyticsObserver(analytics: analytics);
+    analytics?.logAppOpen();
   }
 
   @override
@@ -32,7 +36,7 @@ class _AppState extends State<App> {
       providers: [ChangeNotifierProvider(create: (context) => TipProvider())],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        navigatorObservers: [_analyticsObserver],
+        navigatorObservers: [?_analyticsObserver],
         theme: appTheme(),
         home: const CalculatorScreen(),
       ),
