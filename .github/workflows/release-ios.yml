@@ -51,10 +51,10 @@ jobs:
           " > ./lib/env.dart
           echo "SENTRY_DSN=${SENTRY_DSN}" > ./ios/Runner/Config.xcconfig
           echo -n $GOOGLE_SERVICE_INFO_PLIST_BASE64 | base64 --decode > ./ios/Runner/GoogleService-Info.plist
-      - uses: flutter-actions/setup-flutter@v3
+      - uses: flutter-actions/setup-flutter@v4.3
         with:
           channel: stable
-          version:  3.32.2
+          version: 3.47.9
           cache-sdk: true
       - run: flutter pub get
       - run: flutter build ipa --release --no-codesign

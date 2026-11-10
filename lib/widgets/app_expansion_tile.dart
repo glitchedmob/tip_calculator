@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-import 'package:configurable_expansion_tile/configurable_expansion_tile.dart';
+import 'package:material_ui/material_ui.dart';
 
 class AppExpansionTile extends StatefulWidget {
   final Widget header;
@@ -21,51 +19,91 @@ class AppExpansionTile extends StatefulWidget {
 }
 
 class _AppExpansionTileState extends State<AppExpansionTile> {
-  final GlobalKey<ConfigurableExpansionTileState> expansionTileKey =
-      GlobalKey();
+  final _controller = ExpansibleController();
+
+  @override
+  void initState() {
+    super.initState();
+    _updateExpansion();
+  }
 
   @override
   void didUpdateWidget(AppExpansionTile oldWidget) {
     super.didUpdateWidget(oldWidget);
-
     if (oldWidget.expanded != widget.expanded) {
-      expansionTileKey.currentState?.handleTap();
+      _updateExpansion();
     }
+  }
+
+  void _updateExpansion() {
+    if (widget.expanded) {
+      _controller.expand();
+    } else {
+      _controller.collapse();
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(15),
-      child: Container(
+      child: ColoredBox(
         color: Theme.of(context).colorScheme.secondary,
-        child: ConfigurableExpansionTile(
-          key: expansionTileKey,
-          initiallyExpanded: widget.expanded,
-          animatedWidgetFollowingHeader: GestureDetector(
-            onTap: widget.onHeaderTap,
-            behavior: HitTestBehavior.opaque,
-            child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 11),
-              child: Icon(Icons.expand_more),
+        // Preserve the fork's header spacing, transparent borders and motion.
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 1),
+          child: Expansible(
+            controller: _controller,
+            animationStyle: const AnimationStyle(
+              duration: Duration(milliseconds: 200),
+              curve: Curves.easeIn,
             ),
-          ),
-          header: Expanded(
-            child: GestureDetector(
-              onTap: widget.onHeaderTap,
-              behavior: HitTestBehavior.opaque,
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: widget.header,
-              ),
-            ),
-          ),
-          children: <Widget>[
-            SizedBox(
+            maintainState: false,
+            headerBuilder: (context, animation) {
+              return Semantics(
+                button: true,
+                expanded: widget.expanded,
+                child: InkWell(
+                  onTap: widget.onHeaderTap,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: widget.header,
+                        ),
+                      ),
+                      RotationTransition(
+                        turns: animation.drive(
+                          Tween<double>(
+                            begin: 0,
+                            end: 0.5,
+                          ).chain(CurveTween(curve: Curves.easeIn)),
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 5,
+                            vertical: 11,
+                          ),
+                          child: Icon(Icons.expand_more),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+            bodyBuilder: (context, animation) => SizedBox(
               width: double.infinity,
               child: Column(children: widget.children),
             ),
-          ],
+          ),
         ),
       ),
     );
