@@ -1,12 +1,12 @@
 {
-    "name": "tip_calculator",
-    "short_name": "tip_calculator",
+    "name": "Tip Calculator",
+    "short_name": "Tip Calculator",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
-    "orientation": "portrait-primary",
+    "background_color": "#000000",
+    "theme_color": "#000000",
+    "description": "A simple tip calculator with quick tip and total rounding.",
+    "orientation": "any",
     "prefer_related_applications": false,
     "icons": [
         {
