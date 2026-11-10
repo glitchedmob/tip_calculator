@@ -1,20 +1,117 @@
-name: Lint & Analyze
+name: Analyze and build
+
 on:
   pull_request:
-    branches:
-      - main
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  lint-analyze:
+  analyze:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+      - id: flutter
+        name: Read pinned Flutter version
+        run: echo "version=$(tr -d '[:space:]' < .flutter-version)" >> "$GITHUB_OUTPUT"
       - uses: flutter-actions/setup-flutter@v4.3
         with:
           channel: stable
-          version: 3.47.9
+          version: ${{ steps.flutter.outputs.version }}
           cache-sdk: true
-      - run: flutter pub get
-      - run: dart format --set-exit-if-changed .
-      - run: cp ./lib/env.dart.example ./lib/env.dart
-      - run: cp ./lib/firebase_options.dart.example ./lib/firebase_options.dart
+      - name: Create local Dart configuration
+        run: |
+          cp lib/env.dart.example lib/env.dart
+          cp lib/firebase_options.dart.example lib/firebase_options.dart
+      - run: flutter pub get --enforce-lockfile
+      - run: dart format --output=none --set-exit-if-changed lib test
       - run: flutter analyze
+
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - id: flutter
+        name: Read pinned Flutter version
+        run: echo "version=$(tr -d '[:space:]' < .flutter-version)" >> "$GITHUB_OUTPUT"
+      - uses: flutter-actions/setup-flutter@v4.3
+        with:
+          version: ${{ steps.flutter.outputs.version }}
+          cache-sdk: true
+      - name: Create local Dart configuration
+        run: |
+          cp lib/env.dart.example lib/env.dart
+          cp lib/firebase_options.dart.example lib/firebase_options.dart
+      - run: flutter pub get --enforce-lockfile
+      - name: Build JavaScript web release
+        run: flutter build web --release --dart-define=ENABLE_ANALYTICS=false --dart-define=ENABLE_ERROR_TRACKING=false
+      - name: Build Wasm web release with JavaScript fallback
+        run: flutter build web --release --wasm --dart-define=ENABLE_ANALYTICS=false --dart-define=ENABLE_ERROR_TRACKING=false
+
+  mobile:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: android
+            runner: ubuntu-latest
+          - platform: ios
+            runner: xcode-27
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v7
+      - id: flutter
+        name: Read pinned Flutter version
+        run: echo "version=$(tr -d '[:space:]' < .flutter-version)" >> "$GITHUB_OUTPUT"
+      - uses: flutter-actions/setup-flutter@v4.3
+        with:
+          version: ${{ steps.flutter.outputs.version }}
+          cache-sdk: true
+      - uses: actions/setup-java@v6
+        if: matrix.platform == 'android'
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: maxim-lobanov/setup-xcode@v1
+        if: matrix.platform == 'ios'
+        with:
+          xcode-version: '27.2'
+      - name: Create compile-only configuration without production credentials
+        run: |
+          cp lib/env.dart.example lib/env.dart
+          cp lib/firebase_options.dart.example lib/firebase_options.dart
+          cp ios/Runner/Config.xcconfig.example ios/Runner/Config.xcconfig
+          python3 - <<'PY'
+          import json
+          import pathlib
+          import plistlib
+
+          package = 'com.levizitting.tipcalculator'
+          android = {
+              'project_info': {'project_number': '123456789012', 'project_id': 'tip-calculator-ci'},
+              'client': [{
+                  'client_info': {
+                      'mobilesdk_app_id': '1:123456789012:android:0000000000000000000000',
+                      'android_client_info': {'package_name': package},
+                  },
+                  'api_key': [{'current_key': 'AIzaSyAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'}],
+              }],
+              'configuration_version': '1',
+          }
+          pathlib.Path('android/app/google-services.json').write_text(json.dumps(android))
+          with open('ios/Runner/GoogleService-Info.plist', 'wb') as f:
+              plistlib.dump({'BUNDLE_ID': package, 'PROJECT_ID': 'tip-calculator-ci'}, f)
+          PY
+      - run: flutter pub get --enforce-lockfile
+      - name: Build unsigned Android release
+        if: matrix.platform == 'android'
+        run: flutter build apk --release --dart-define=ENABLE_ANALYTICS=false --dart-define=ENABLE_ERROR_TRACKING=false
+      - name: Build unsigned iOS release
+        if: matrix.platform == 'ios'
+        run: flutter build ios --release --no-codesign --dart-define=ENABLE_ANALYTICS=false --dart-define=ENABLE_ERROR_TRACKING=false
