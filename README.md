@@ -34,6 +34,32 @@ requires it, with a 48-pixel minimum touch target. Result labels and values stac
 only when they cannot fit on one row. Wide windows use the existing side-by-side
 layout, capped at 1100 logical pixels, and all layouts respect device safe areas.
 
+## Web
+
+The web app uses the current Flutter bootstrap and the same calculator layout.
+To run without Firebase or Sentry, copy both Dart example files to their local
+counterparts, then run:
+
+```sh
+flutter run -d chrome --dart-define=ENABLE_ANALYTICS=false --dart-define=ENABLE_ERROR_TRACKING=false
+```
+
+For web analytics, configure a Firebase web app with `flutterfire configure` and
+include web when generating `lib/firebase_options.dart`. The `ENABLE_ANALYTICS`
+and `ENABLE_ERROR_TRACKING` Dart defines override the defaults in `Env` on all
+platforms. Mobile continues applying the analytics opt-out to Firebase when off.
+
+Build the standard web release or opt into WebAssembly with its JavaScript fallback:
+
+```sh
+flutter build web --release --dart-define=ENABLE_ANALYTICS=false --dart-define=ENABLE_ERROR_TRACKING=false
+flutter build web --release --wasm --dart-define=ENABLE_ANALYTICS=false --dart-define=ENABLE_ERROR_TRACKING=false
+```
+
+Serve `build/web/` from an HTTPS host. Check your host's cross-origin isolation
+settings before relying on multi-threaded Wasm rendering. This project does not
+install a service worker or promise offline caching of the web application.
+
 ## Building
 
 ```sh
