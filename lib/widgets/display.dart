@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'package:tip_calculator/widgets/bill_amount_input.dart';
 import 'package:tip_calculator/widgets/bill_total_expansion_tile.dart';
