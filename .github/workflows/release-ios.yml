@@ -1,81 +1,165 @@
-name: Build and Upload app
+name: Build and upload iOS app
+
 on:
   release:
-    types: [ created ]
+    types: [published]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-ios
+  cancel-in-progress: false
+
 jobs:
   build:
-    runs-on: [macos-latest]
+    runs-on: xcode-27
     steps:
-      - uses: actions/checkout@v3
-      - name: Install certificate and provisioning profile
+      - uses: actions/checkout@v7
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '27.2'
+      - id: flutter
+        name: Read pinned Flutter version
+        run: echo "version=$(tr -d '[:space:]' < .flutter-version)" >> "$GITHUB_OUTPUT"
+      - uses: flutter-actions/setup-flutter@v4.3
+        with:
+          channel: stable
+          version: ${{ steps.flutter.outputs.version }}
+          cache-sdk: true
+      - name: Create Firebase and environment configuration
+        env:
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          GOOGLE_SERVICE_INFO_PLIST_BASE64: ${{ secrets.GOOGLE_SERVICE_INFO_PLIST_BASE64 }}
+        run: |
+          python3 - <<'PY'
+          import base64
+          import json
+          import os
+          import pathlib
+          import plistlib
+
+          encoded = os.environ['GOOGLE_SERVICE_INFO_PLIST_BASE64']
+          if not encoded:
+              raise SystemExit('GOOGLE_SERVICE_INFO_PLIST_BASE64 is required')
+          data = base64.b64decode(encoded)
+          pathlib.Path('ios/Runner/GoogleService-Info.plist').write_bytes(data)
+          config = plistlib.loads(data)
+          if config['BUNDLE_ID'] != 'com.levizitting.tipcalculator':
+              raise SystemExit('Firebase configuration has the wrong bundle ID')
+
+          def dart_string(value):
+              return json.dumps(value).replace('$', r'\$')
+
+          options = {
+              'apiKey': config['API_KEY'],
+              'appId': config['GOOGLE_APP_ID'],
+              'messagingSenderId': config['GCM_SENDER_ID'],
+              'projectId': config['PROJECT_ID'],
+              'iosBundleId': config['BUNDLE_ID'],
+          }
+          if config.get('STORAGE_BUCKET'):
+              options['storageBucket'] = config['STORAGE_BUCKET']
+          fields = '\n'.join(f'    {key}: {dart_string(value)},' for key, value in options.items())
+          pathlib.Path('lib/firebase_options.dart').write_text(
+              "import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;\n"
+              'class DefaultFirebaseOptions {\n'
+              '  static const currentPlatform = FirebaseOptions(\n' + fields + '\n  );\n}\n'
+          )
+          dsn = os.environ.get('SENTRY_DSN', '')
+          pathlib.Path('lib/env.dart').write_text(
+              'class Env {\n  Env._();\n'
+              f'  static const sentryDsn = {dart_string(dsn)};\n'
+              f'  static const enableErrorTracking = {str(bool(dsn)).lower()};\n'
+              '  static const enableAnalytics = true;\n}\n'
+          )
+          # Prevent // in a URL from being parsed as an xcconfig comment.
+          pathlib.Path('ios/Runner/Config.xcconfig').write_text(
+              'SENTRY_DSN = ' + dsn.replace('//', '/$()/') + '\n'
+          )
+          PY
+      - name: Install distribution certificate and provisioning profile
         env:
           SIGNING_CERTIFICATE_P12_PASSWORD: ${{ secrets.SIGNING_CERTIFICATE_P12_PASSWORD }}
           SIGNING_CERTIFICATE_P12_BASE64: ${{ secrets.SIGNING_CERTIFICATE_P12_BASE64 }}
           PROVISIONING_PROFILE_BASE64: ${{ secrets.PROVISIONING_PROFILE_BASE64 }}
         run: |
-          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-          PUBLIC_CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate_public.crt
-          PROVISIONING_PROFILE_PATH=$RUNNER_TEMP/build_pp.mobileprovision
-          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
-          
-          echo -n $SIGNING_CERTIFICATE_P12_BASE64 | base64 --decode -o $CERTIFICATE_PATH
-          echo -n $PROVISIONING_PROFILE_BASE64 | base64 --decode -o $PROVISIONING_PROFILE_PATH
-          
-          security create-keychain -p $SIGNING_CERTIFICATE_P12_PASSWORD $KEYCHAIN_PATH
-          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
-          security unlock-keychain -p $SIGNING_CERTIFICATE_P12_PASSWORD $KEYCHAIN_PATH
+          set -euo pipefail
+          : "${SIGNING_CERTIFICATE_P12_BASE64:?Distribution certificate is required}"
+          : "${PROVISIONING_PROFILE_BASE64:?Provisioning profile is required}"
+          KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
+          KEYCHAIN_PASSWORD=$(openssl rand -hex 32)
+          echo "::add-mask::$KEYCHAIN_PASSWORD"
+          printf '%s' "$SIGNING_CERTIFICATE_P12_BASE64" | base64 --decode > "$RUNNER_TEMP/certificate.p12"
+          printf '%s' "$PROVISIONING_PROFILE_BASE64" | base64 --decode > "$RUNNER_TEMP/profile.mobileprovision"
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security import "$RUNNER_TEMP/certificate.p12" -P "$SIGNING_CERTIFICATE_P12_PASSWORD" -t cert -f pkcs12 -k "$KEYCHAIN_PATH" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security list-keychains -d user -s "$KEYCHAIN_PATH" "$HOME/Library/Keychains/login.keychain-db"
+          security cms -D -i "$RUNNER_TEMP/profile.mobileprovision" > "$RUNNER_TEMP/profile.plist"
+          PROFILE_UUID=$(/usr/libexec/PlistBuddy -c 'Print :UUID' "$RUNNER_TEMP/profile.plist")
+          PROFILE_DIR="$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles"
+          mkdir -p "$PROFILE_DIR"
+          cp "$RUNNER_TEMP/profile.mobileprovision" "$PROFILE_DIR/$PROFILE_UUID.mobileprovision"
+          python3 - <<'PY'
+          import os
+          import pathlib
+          import plistlib
 
-          security list-keychain -d user -s $KEYCHAIN_PATH
-          
-          security import $CERTIFICATE_PATH -P $SIGNING_CERTIFICATE_P12_PASSWORD -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
-          
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          cp $PROVISIONING_PROFILE_PATH ~/Library/MobileDevice/Provisioning\ Profiles
-          cd ~/Library/MobileDevice/Provisioning\ Profiles
-      - name: TODO - Needs updated with new firebase patterns
-        run: |
-          echo "ERROR: The pipeline doesn't create lib/firebase_options.dart and will fail"
-          exit 1
-      - name: Create environment files
-        env:
-          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-          GOOGLE_SERVICE_INFO_PLIST_BASE64: ${{ secrets.GOOGLE_SERVICE_INFO_PLIST_BASE64 }}
-        run: |
-          echo "class Env {
-            Env._();
-          
-            static const sentryDsn = '$SENTRY_DSN';
-            static const enableErrorTracking = true;
-            static const enableAnalytics = true;
+          root = pathlib.Path(os.environ['RUNNER_TEMP'])
+          profile = plistlib.loads((root / 'profile.plist').read_bytes())
+          bundle = 'com.levizitting.tipcalculator'
+          team = profile['TeamIdentifier'][0]
+          expected_app_id = profile['ApplicationIdentifierPrefix'][0] + '.' + bundle
+          if profile['Entitlements']['application-identifier'] != expected_app_id:
+              raise SystemExit('Provisioning profile has the wrong application identifier')
+          export = {
+              'method': 'app-store-connect',
+              'teamID': team,
+              'signingStyle': 'manual',
+              'signingCertificate': 'Apple Distribution',
+              'provisioningProfiles': {bundle: profile['Name']},
+              'manageAppVersionAndBuildNumber': False,
           }
-          " > ./lib/env.dart
-          echo "SENTRY_DSN=${SENTRY_DSN}" > ./ios/Runner/Config.xcconfig
-          echo -n $GOOGLE_SERVICE_INFO_PLIST_BASE64 | base64 --decode > ./ios/Runner/GoogleService-Info.plist
-      - uses: flutter-actions/setup-flutter@v4.3
-        with:
-          channel: stable
-          version: 3.47.9
-          cache-sdk: true
-      - run: flutter pub get
-      - run: flutter build ipa --release --no-codesign
-      - name: Sign app
+          with (root / 'ExportOptions.plist').open('wb') as f:
+              plistlib.dump(export, f)
+          PY
+      - run: flutter pub get --enforce-lockfile
+      - name: Archive and export signed app
         run: |
-          xcrun xcodebuild -exportArchive -exportOptionsPlist ./ios/ExportOptions.plist -archivePath ./build/ios/archive/Runner.xcarchive -exportPath ./build/ios/ipa
-      - name: Write Appstore API private key
+          set -euo pipefail
+          flutter build ios --release --config-only --no-codesign
+          TEAM_ID=$(/usr/libexec/PlistBuddy -c 'Print :TeamIdentifier:0' "$RUNNER_TEMP/profile.plist")
+          PROFILE_NAME=$(/usr/libexec/PlistBuddy -c 'Print :Name' "$RUNNER_TEMP/profile.plist")
+          xcodebuild archive -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release \
+            -destination 'generic/platform=iOS' -archivePath build/ios/archive/Runner.xcarchive \
+            CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM="$TEAM_ID" \
+            PROVISIONING_PROFILE_SPECIFIER="$PROFILE_NAME" CODE_SIGN_IDENTITY='Apple Distribution'
+          xcodebuild -exportArchive -archivePath build/ios/archive/Runner.xcarchive \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" -exportPath build/ios/ipa
+      - name: Upload to TestFlight
         env:
           APPSTORE_API_PRIVATE_KEY_BASE64: ${{ secrets.APPSTORE_API_PRIVATE_KEY_BASE64 }}
           APPSTORE_API_KEY_ID: ${{ secrets.APPSTORE_API_KEY_ID }}
-        run: |
-          mkdir -p ./private_keys
-          echo -n $APPSTORE_API_PRIVATE_KEY_BASE64 | base64 --decode > ./private_keys/AuthKey_${APPSTORE_API_KEY_ID}.p8
-      - name: Upload app to Testflight
-        env:
-          APPSTORE_API_KEY_ID: ${{ secrets.APPSTORE_API_KEY_ID }}
           APPSTORE_ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
         run: |
-          xcrun altool --upload-app --type ios -f ./build/ios/ipa/*.ipa --apiKey $APPSTORE_API_KEY_ID --apiIssuer $APPSTORE_ISSUER_ID
-      - name: Clean up keychain and provisioning profile
+          set -euo pipefail
+          : "${APPSTORE_API_PRIVATE_KEY_BASE64:?App Store Connect private key is required}"
+          : "${APPSTORE_API_KEY_ID:?App Store Connect key ID is required}"
+          : "${APPSTORE_ISSUER_ID:?App Store Connect issuer ID is required}"
+          mkdir -p private_keys
+          printf '%s' "$APPSTORE_API_PRIVATE_KEY_BASE64" | base64 --decode > "private_keys/AuthKey_${APPSTORE_API_KEY_ID}.p8"
+          chmod 600 "private_keys/AuthKey_${APPSTORE_API_KEY_ID}.p8"
+          xcrun altool --upload-app --type ios -f build/ios/ipa/*.ipa --apiKey "$APPSTORE_API_KEY_ID" --apiIssuer "$APPSTORE_ISSUER_ID"
+      - name: Remove signing material
         if: always()
         run: |
-          security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
-          rm -f ~/Library/MobileDevice/Provisioning\ Profiles/build_pp.mobileprovision
+          security delete-keychain "$RUNNER_TEMP/app-signing.keychain-db" || true
+          if [ -f "$RUNNER_TEMP/profile.plist" ]; then
+            PROFILE_UUID=$(/usr/libexec/PlistBuddy -c 'Print :UUID' "$RUNNER_TEMP/profile.plist")
+            rm -f "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles/$PROFILE_UUID.mobileprovision"
+          fi
+          rm -f "$RUNNER_TEMP/certificate.p12" "$RUNNER_TEMP/profile.mobileprovision" "$RUNNER_TEMP/profile.plist" "$RUNNER_TEMP/ExportOptions.plist"
+          rm -rf private_keys
