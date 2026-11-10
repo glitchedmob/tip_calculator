@@ -28,6 +28,12 @@ The bundle ID remains `com.levizitting.tipcalculator` on both mobile platforms.
 Roboto Mono is bundled under `assets/fonts/` with its license, so the app does not
 need to download fonts at runtime.
 
+The layout keeps the original colors, circular keypad buttons and typography.
+Buttons remain 85 logical pixels on normal screens and shrink only when space
+requires it, with a 48-pixel minimum touch target. Result labels and values stack
+only when they cannot fit on one row. Wide windows use the existing side-by-side
+layout, capped at 1100 logical pixels, and all layouts respect device safe areas.
+
 ## Building
 
 ```sh

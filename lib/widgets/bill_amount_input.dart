@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'package:tip_calculator/provider/tip_provider.dart';
 import 'package:tip_calculator/utils/money.dart';
+import 'package:tip_calculator/widgets/value_row.dart';
 
 class BillAmountInput extends StatelessWidget {
   const BillAmountInput({super.key});
@@ -18,15 +19,10 @@ class BillAmountInput extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(15)),
       ),
       padding: const EdgeInsets.all(10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          const Text('Bill Amount'),
-          Padding(
-            padding: const EdgeInsets.only(right: 35),
-            child: Text(formatCents(tipProvider.billAmount)),
-          ),
-        ],
+      child: ValueRow(
+        label: 'Bill Amount',
+        value: formatCents(tipProvider.billAmount),
+        trailingPadding: 35,
       ),
     );
   }
