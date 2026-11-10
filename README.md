@@ -76,3 +76,29 @@ signing key. Use a debug build for development without release credentials.
 
 The unsigned iOS build verifies compilation only. Distribution requires the
 appropriate Apple certificate, provisioning profile and export settings.
+
+## GitHub Actions
+
+Pull requests against any branch, including stacked PRs, run formatting,
+analysis, JavaScript and Wasm web builds, and unsigned Android and iOS release
+builds. These builds use compile-only Firebase placeholders and do not need
+production credentials. No emulator or device checks run in this workflow.
+
+Both workflows read the Flutter version from `.flutter-version`. The iOS jobs
+select Xcode 27.2 on GitHub's documented `xcode-27` preview runner because the
+standard macOS images do not yet include Xcode 27. Runner capacity and availability
+follow that preview image.
+
+Publishing a GitHub release runs the signed iOS archive and TestFlight upload.
+Configure these repository secrets:
+
+- `GOOGLE_SERVICE_INFO_PLIST_BASE64`
+- `SENTRY_DSN`, optional
+- `SIGNING_CERTIFICATE_P12_BASE64` and `SIGNING_CERTIFICATE_P12_PASSWORD`
+- `PROVISIONING_PROFILE_BASE64`, an App Store distribution profile for the bundle ID
+- `APPSTORE_API_PRIVATE_KEY_BASE64`, `APPSTORE_API_KEY_ID` and `APPSTORE_ISSUER_ID`
+
+The release workflow derives iOS Dart Firebase options from the supplied native
+plist and export settings from the provisioning profile. It does not require a
+separate Dart-options secret or an untracked `ExportOptions.plist`. Distribution
+credentials are needed to verify signing and upload, beyond the unsigned PR build.
