@@ -6,6 +6,7 @@ import 'package:tip_calculator/provider/tip_provider.dart';
 import 'package:tip_calculator/utils/money.dart';
 import 'package:tip_calculator/widgets/app_expansion_tile.dart';
 import 'package:tip_calculator/widgets/expansion_tile_option.dart';
+import 'package:tip_calculator/widgets/value_row.dart';
 
 class TipAmountExpansionTile extends StatelessWidget {
   final bool expanded;
@@ -24,12 +25,9 @@ class TipAmountExpansionTile extends StatelessWidget {
     return AppExpansionTile(
       expanded: expanded,
       onHeaderTap: onTap,
-      header: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          const Text('Tip Amount'),
-          Text(formatCents(tipProvider.tipAmount)),
-        ],
+      header: ValueRow(
+        label: 'Tip Amount',
+        value: formatCents(tipProvider.tipAmount),
       ),
       children: <Widget>[
         const Padding(
